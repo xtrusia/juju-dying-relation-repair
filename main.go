@@ -234,7 +234,7 @@ func run(modelUUID, application, backup string, apply bool) error {
 	if err != nil {
 		return fmt.Errorf("revalidating the plan before writing: %w", err)
 	}
-	if !reflect.DeepEqual(p, fresh) {
+	if !samePlan(p, fresh) {
 		return fmt.Errorf("Mongo state changed after planning; no changes were applied, retry the command")
 	}
 	if err := sstxn.NewRunner(db, nil).Run(repairOps(p), "", nil); err != nil {
@@ -245,6 +245,25 @@ func run(modelUUID, application, backup string, apply bool) error {
 		fmt.Printf("\nnext: juju remove-saas -m %s %s --force --no-wait\n", p.Model, saas)
 	}
 	return nil
+}
+
+// samePlan compares two plans without the documents of the changes that
+// assert no txn-revno: Juju keeps rewriting those, and their changes assert
+// every field they rely on.
+func samePlan(a, b *plan) bool {
+	return reflect.DeepEqual(withoutLiveDocs(a), withoutLiveDocs(b))
+}
+
+func withoutLiveDocs(p *plan) plan {
+	out := *p
+	out.Changes = make([]change, len(p.Changes))
+	for i, c := range p.Changes {
+		if _, ok := c.Assert["txn-revno"]; !ok {
+			c.Doc = nil
+		}
+		out.Changes[i] = c
+	}
+	return out
 }
 
 func backedUp(p *plan) int {

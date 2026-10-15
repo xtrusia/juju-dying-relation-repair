@@ -166,6 +166,12 @@ func TestPlanMatchesPythonScript(t *testing.T) {
 		if op["c"] == "cleanups" {
 			delete(op, "d")
 		}
+		// Unlike the script, the tool does not assert the txn-revno of an
+		// application, which Juju keeps changing while a Kubernetes
+		// application is stuck.
+		if op["c"] == "applications" || op["c"] == "remoteApplications" {
+			delete(op["a"].(map[string]interface{}), "txn-revno")
+		}
 	}
 	if g, w := normalize(t, got), normalize(t, want); !reflect.DeepEqual(g, w) {
 		gj, _ := json.MarshalIndent(g, "", " ")
@@ -195,8 +201,20 @@ func TestPlanIsStableForRevalidation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if reflect.DeepEqual(first, third) {
+	if samePlan(first, third) {
 		t.Fatal("a relation changed after planning must make the plans differ")
+	}
+	busy := loadDump(t)
+	for _, app := range busy["applications"] {
+		app["txn-revno"] = 99
+		app["provisioning-state"] = map[string]interface{}{"scaling": true}
+	}
+	fourth, err := planRepair(busy, testModel, "app1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !samePlan(first, fourth) {
+		t.Fatal("an application rewritten after planning must not make the plans differ")
 	}
 }
 
@@ -359,7 +377,7 @@ func TestPrintPlanShowsTransactionAndNextStep(t *testing.T) {
 		"update applications/" + testModel + ":app1: $inc relationcount -1",
 		"insert cleanups: args=[false false], kind=application, model-uuid=" + testModel + ", prefix=app1, when=asap",
 		"    if id=4, key=app1:database postgres:database, life=1, txn-revno=",
-		"    if life=1, name=app1, relationcount=1, txn-revno=",
+		"    if life=1, name=app1, relationcount=1, unitcount=0\n",
 		"update unitstates/" + testModel + ":u#app1/0#charm: $unset relation-state.4 1",
 		"then: juju remove-saas -m / postgres --force --no-wait",
 	} {

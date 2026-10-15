@@ -282,6 +282,10 @@ func (p *plan) updateRelationCount(st store, modelUUID string, app *application,
 	if err := p.update(app.collection(), app.doc, assert, update); err != nil {
 		return err
 	}
+	// Juju rewrites the document of a stuck Kubernetes application several
+	// times a second, so an application's txn-revno is not asserted. The
+	// fields above are all the count change relies on.
+	delete(p.Changes[len(p.Changes)-1].Assert, "txn-revno")
 	if left > 0 || life != lifeDying {
 		return nil
 	}
