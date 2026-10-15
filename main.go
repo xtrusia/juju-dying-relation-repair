@@ -30,6 +30,7 @@ import (
 	"reflect"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/juju/mgo/v3"
 	"github.com/juju/mgo/v3/bson"
@@ -105,6 +106,9 @@ type modelInfo struct {
 }
 
 func drive(model, application, backup string, apply bool) error {
+	if abs, err := filepath.Abs(backup); err == nil {
+		backup = abs
+	}
 	out, err := exec.Command("juju", "show-model", model, "--format", "json").Output()
 	if err != nil {
 		return fmt.Errorf("showing model %q: %w", model, err)
@@ -294,7 +298,12 @@ func describeUpdate(update bson.M) string {
 func describeFields(fields map[string]interface{}) string {
 	var parts []string
 	for _, k := range sortedKeys(fields) {
-		parts = append(parts, fmt.Sprintf("%s=%v", k, fields[k]))
+		v := fields[k]
+		if t, ok := v.(time.Time); ok && t.IsZero() {
+			// Juju calls a zero cleanup time asap: due at once.
+			v = "asap"
+		}
+		parts = append(parts, fmt.Sprintf("%s=%v", k, v))
 	}
 	return strings.Join(parts, ", ")
 }

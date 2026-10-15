@@ -268,7 +268,7 @@ func RunOnMachine(p RunParams) error {
 			keepRemoteBackup = true
 			fmt.Fprintf(os.Stderr, "warning: could not fetch %s: %v; it is retained at %s:%s\n", p.RemoteBackup, err, p.Machine, p.RemoteBackup)
 		} else {
-			fmt.Printf("fetched %s\n", p.Backup)
+			fmt.Printf("copied %s from controller machine %s to %s\n", p.RemoteBackup, p.Machine, p.Backup)
 		}
 	}
 	if runErr != nil {

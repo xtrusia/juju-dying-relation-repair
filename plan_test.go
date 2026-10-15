@@ -357,7 +357,7 @@ func TestPrintPlanShowsTransactionAndNextStep(t *testing.T) {
 	for _, want := range []string{
 		"remove relations/" + testModel + ":app1:database postgres:database",
 		"update applications/" + testModel + ":app1: $inc relationcount -1",
-		"insert cleanups: args=[false false], kind=application, model-uuid=" + testModel + ", prefix=app1",
+		"insert cleanups: args=[false false], kind=application, model-uuid=" + testModel + ", prefix=app1, when=asap",
 		"    if id=4, key=app1:database postgres:database, life=1, txn-revno=",
 		"    if life=1, name=app1, relationcount=1, txn-revno=",
 		"update unitstates/" + testModel + ":u#app1/0#charm: $unset relation-state.4 1",
