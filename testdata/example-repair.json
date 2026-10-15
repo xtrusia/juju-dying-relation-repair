@@ -1,0 +1,96 @@
+[
+  {
+    "a": {
+      "id": 4,
+      "key": "app1:database postgres:database",
+      "life": 1,
+      "txn-revno": 9,
+      "unitcount": 0
+    },
+    "c": "relations",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:app1:database postgres:database",
+    "r": true
+  },
+  {
+    "a": {
+      "txn-revno": 10
+    },
+    "c": "settings",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:r#4#app1",
+    "r": true
+  },
+  {
+    "a": {
+      "txn-revno": 12
+    },
+    "c": "statuses",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:r#4",
+    "r": true
+  },
+  {
+    "a": {
+      "txn-revno": 13
+    },
+    "c": "remoteEntities",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:relation-app1.database#postgres.database",
+    "r": true
+  },
+  {
+    "a": {
+      "life": 1,
+      "name": "app1",
+      "relationcount": 1,
+      "txn-revno": 7,
+      "unitcount": 0
+    },
+    "c": "applications",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:app1",
+    "u": {
+      "$inc": {
+        "relationcount": -1
+      }
+    }
+  },
+  {
+    "a": "d-",
+    "c": "cleanups",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ba15c6c3d47244b08facdb6ea31e8333",
+    "i": {
+      "args": [
+        false,
+        false
+      ],
+      "kind": "application",
+      "model-uuid": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "prefix": "app1"
+    }
+  },
+  {
+    "a": {
+      "is-consumer-proxy": false,
+      "life": 1,
+      "name": "postgres",
+      "relationcount": 1,
+      "txn-revno": 8
+    },
+    "c": "remoteApplications",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:postgres",
+    "u": {
+      "$inc": {
+        "relationcount": -1
+      }
+    }
+  },
+  {
+    "a": {
+      "txn-revno": 14
+    },
+    "c": "unitstates",
+    "d": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:u#app1/0#charm",
+    "u": {
+      "$unset": {
+        "relation-state.4": 1
+      }
+    }
+  }
+]

@@ -1,0 +1,51 @@
+applications:
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:app1
+  life: 1
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  name: app1
+  relationcount: 1
+  txn-revno: 7
+  unitcount: 0
+models:
+  _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+relations:
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:app1:database postgres:database
+  endpoints:
+  - applicationname: app1
+  - applicationname: postgres
+  id: 4
+  key: app1:database postgres:database
+  life: 1
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  txn-revno: 9
+  unitcount: 0
+remoteApplications:
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:postgres
+  is-consumer-proxy: false
+  life: 1
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  name: postgres
+  relationcount: 1
+  txn-revno: 8
+remoteEntities:
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:relation-app1.database#postgres.database
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  txn-revno: 13
+settings:
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:r#4#app1
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  txn-revno: 10
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:r#40#other
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  txn-revno: 11
+statuses:
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:r#4
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  txn-revno: 12
+unitstates:
+- _id: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:u#app1/0#charm
+  model-uuid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  relation-state:
+    '4': {}
+    '40': {}
+  txn-revno: 14
